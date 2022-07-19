@@ -8,6 +8,7 @@ import ru.job4j.chat.repository.PersonRepository;
 import ru.job4j.chat.repository.RoleRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +34,9 @@ public class PersonService {
 
     public Person findByLogin(String name) {
         return personRepo.findByLogin(name);
+    }
+
+    public Optional<Person> findById(int id) {
+        return personRepo.findById(id);
     }
 }

@@ -22,17 +22,19 @@ import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public static final String SECRET = "SecretKeyToGenJWTs";
     public static final long EXPIRATION_TIME = 864_000_000; /* 10 days */
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
-    public static final String SIGN_UP_URL = "/users/sign-up";
+    public static final String SIGN_UP_URL = "/chat/persons/sign-up";
 
     private AuthenticationManager auth;
+
+    public JWTAuthenticationFilter(AuthenticationManager auth) {
+        this.auth = auth;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)

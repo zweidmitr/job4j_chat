@@ -20,6 +20,15 @@ public class PersonController {
         return personService.findAll();
     }
 
+    @GetMapping("/persons/{id}")
+    public ResponseEntity<Person> findById(@PathVariable int id) {
+        var person = this.personService.findById(id);
+        return new ResponseEntity<>(
+                person.orElse(new Person()),
+                person.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
+    }
+
     @PostMapping("/person")
     public ResponseEntity<Person> create(@RequestBody Person person) {
         return new ResponseEntity<>(personService.save(person), HttpStatus.CREATED);

@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.job4j.chat.domain.Person;
-import ru.job4j.chat.repository.UserStore;
 
 import static java.util.Collections.emptyList;
 

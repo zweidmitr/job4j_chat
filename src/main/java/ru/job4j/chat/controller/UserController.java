@@ -11,15 +11,15 @@ import ru.job4j.chat.service.PersonService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/chat/persons")
 @RequiredArgsConstructor
 public class UserController {
     private final PersonService users;
     private final BCryptPasswordEncoder encoder;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Person> singUp(@RequestBody Person person) {
+    public void singUp(@RequestBody Person person) {
         person.setPassword(encoder.encode(person.getPassword()));
-        return new ResponseEntity<>(users.save(person), HttpStatus.CREATED);
+        users.save(person);
     }
 }
