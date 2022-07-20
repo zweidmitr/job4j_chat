@@ -20,8 +20,8 @@ public class MessageService {
         return messageRepo.findAll();
     }
 
-    public Message save(Message message, String name) {
-        Person personByLogin = personRepo.findByLogin(name);
+    public Message save(Message message, String login) {
+        Person personByLogin = personRepo.findPersonByLogin(login);
         message.setPerson(personByLogin);
         return messageRepo.save(message);
     }

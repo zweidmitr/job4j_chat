@@ -9,7 +9,9 @@ import java.util.List;
 public interface PersonRepository extends CrudRepository<Person, Integer> {
     List<Person> findAll();
 
-    Person findByLogin(String name);
+    @Query("select p from  Person p "
+            + "where p.login = :login")
+    Person findPersonByLogin(String login);
 
     @Query("select distinct p from Person p "
             + "left join fetch p.messages m "

@@ -32,8 +32,8 @@ public class PersonService {
         return personRepo.findAllPeopleInRoom(room);
     }
 
-    public Person findByLogin(String name) {
-        return personRepo.findByLogin(name);
+    public Person findByLogin(String login) {
+        return personRepo.findPersonByLogin(login);
     }
 
     public Optional<Person> findById(int id) {
