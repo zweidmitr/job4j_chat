@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.domain.Room;
 import ru.job4j.chat.service.RoomService;
 
@@ -23,6 +24,10 @@ public class RoomController {
 
     @PostMapping("/room")
     public ResponseEntity<Room> create(@RequestBody Room room) {
+        String name = room.getName();
+        if (name == null) {
+            throw new NullPointerException("Name of room is empty");
+        }
         return new ResponseEntity<>(roomService.save(room), HttpStatus.CREATED);
     }
 
@@ -39,8 +44,10 @@ public class RoomController {
     @GetMapping("room/{name}")
     public ResponseEntity<Room> findByName(@PathVariable String name) {
         Optional<Room> room = roomService.findByName(name);
-        return new ResponseEntity<>(
-                room.orElse(new Room()),
-                room.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+
+        return roomService.findByName(name)
+                .map(res -> new ResponseEntity<>(res, HttpStatus.OK))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Room with name: %s is  not found", name)));
     }
 }
