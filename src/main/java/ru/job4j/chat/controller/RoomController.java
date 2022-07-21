@@ -50,4 +50,17 @@ public class RoomController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Room with name: %s is  not found", name)));
     }
+
+    @PatchMapping("/roomp")
+    public ResponseEntity<Room> path(@RequestBody Room room) {
+        var current = roomService.findById(room.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Room with id: %s is  not found", room.getId())));
+        if (room.getName() != null) {
+            current.setName(room.getName());
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(roomService.save(current));
+    }
 }

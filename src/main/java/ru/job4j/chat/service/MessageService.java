@@ -9,6 +9,7 @@ import ru.job4j.chat.repository.MessageRepository;
 import ru.job4j.chat.repository.PersonRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,5 +29,9 @@ public class MessageService {
 
     public List<Message> findByRoom(Room room) {
         return messageRepo.findByRoom(room);
+    }
+
+    public Optional<Message> findById(int id) {
+        return messageRepo.findById(id);
     }
 }

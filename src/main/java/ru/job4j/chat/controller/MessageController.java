@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.domain.Message;
 import ru.job4j.chat.domain.Person;
 import ru.job4j.chat.domain.Room;
@@ -56,5 +57,24 @@ public class MessageController {
     public List<Message> findAll(@PathVariable("room") String roomName) {
         Room room = rest.getForEntity(API_ROOM, Room.class, roomName).getBody();
         return messageService.findByRoom(room);
+    }
+
+    @PatchMapping("/messagep")
+    public ResponseEntity<Message> path(@RequestBody Message message) {
+        var current = messageService.findById(message.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Message with id: %s is  not found", message.getId())));
+        if (message.getText() != null) {
+            current.setText(message.getText());
+        }
+        if (message.getPerson() != null) {
+            current.setPerson(message.getPerson());
+        }
+        if (message.getRoom() != null) {
+            current.setRoom(message.getRoom());
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(messageService.save(current, current.getRoom().getName()));
     }
 }
