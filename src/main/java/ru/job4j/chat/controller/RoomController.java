@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.chat.domain.Room;
 import ru.job4j.chat.service.RoomService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +24,8 @@ public class RoomController {
     }
 
     @PostMapping("/room")
-    public ResponseEntity<Room> create(@RequestBody Room room) {
+    public ResponseEntity<Room> create(@Valid @RequestBody Room room) {
         String name = room.getName();
-        if (name == null) {
-            throw new NullPointerException("Name of room is empty");
-        }
         return new ResponseEntity<>(roomService.save(room), HttpStatus.CREATED);
     }
 
@@ -52,7 +50,7 @@ public class RoomController {
     }
 
     @PatchMapping("/roomp")
-    public ResponseEntity<Room> path(@RequestBody Room room) {
+    public ResponseEntity<Room> path(@Valid @RequestBody Room room) {
         var current = roomService.findById(room.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Room with id: %s is  not found", room.getId())));
